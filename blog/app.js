@@ -8,7 +8,7 @@ var logger = require('koa-logger');
 var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
-var app = koa();
+var app = module.exports = koa();
 
 // "database"
 
@@ -60,12 +60,12 @@ function *show(id) {
 function *create() {
   var post = yield parse(this);
   var id = posts.push(post) - 1;
-  post.created_at = new Date;
+  post.created_at = new Date();
   post.id = id;
   this.redirect('/');
 }
 
 // listen
 
-app.listen(3000);
-console.log('listening on port 3000');
+if (!module.parent) app.listen(3000);
+
